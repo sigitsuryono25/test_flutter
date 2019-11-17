@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:test_flutter/main_dua.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test_flutter/MainLogin.dart';
+import 'package:test_flutter/MainMenu.dart';
+import 'package:test_flutter/prefs/SharefPrefs.dart';
 
 void main() => runApp(SplashScreen());
 
@@ -21,14 +24,24 @@ class MySplashScreen extends StatefulWidget {
 }
 
 class SplashScreenState extends State<MySplashScreen> {
+  String username = "";
+
   @override
   Widget build(BuildContext context) {
+    checkLoggedInData();
     new Future.delayed(const Duration(seconds: 5), () {
       setState(() {
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => MyAppDua()),
-            (Route route) => false);
+        if (username.isNotEmpty) {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => MainMenu()),
+                  (Route route) => false);
+        } else {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => MyAppDua()),
+                  (Route route) => false);
+        }
       });
     });
 
@@ -61,5 +74,11 @@ class SplashScreenState extends State<MySplashScreen> {
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  void checkLoggedInData() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    var prefs = SharefPrefs(_prefs);
+    username = prefs.getKey("username");
   }
 }
