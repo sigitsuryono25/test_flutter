@@ -24,14 +24,14 @@ class MySplashScreen extends StatefulWidget {
 }
 
 class SplashScreenState extends State<MySplashScreen> {
-  String username = "";
+  bool username;
 
   @override
   Widget build(BuildContext context) {
     checkLoggedInData();
     new Future.delayed(const Duration(seconds: 5), () {
       setState(() {
-        if (username.isNotEmpty) {
+        if (username) {
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => MainMenu()),
@@ -78,7 +78,6 @@ class SplashScreenState extends State<MySplashScreen> {
 
   void checkLoggedInData() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
-    var prefs = SharefPrefs(_prefs);
-    username = prefs.getKey("username");
+    username = _prefs.containsKey("username");
   }
 }

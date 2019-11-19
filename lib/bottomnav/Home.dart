@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_flutter/datamodel/articles.dart';
 import 'package:test_flutter/retrofit/ApiServiceNews.dart';
@@ -28,7 +29,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    _getdata();
+    _getdata(context);
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(children: <Widget>[
@@ -95,13 +96,21 @@ class _HomeState extends State<Home> {
     Fluttertoast.showToast(msg: index);
   }
 
-  void _getdata() {
+  void _getdata(BuildContext context) {
+    var pd = ProgressDialog(context);
+    pd.style(message: "memuat data");
+//    setState(() {
+//      pd.show();
+//    });
     final dio = Dio();
     final client = ApiServiceNews(dio);
-    client.getNews("apple", "popularity").then((it) => _setToView(it.articles));
+    client
+        .getNews("apple", "popularity")
+        .then((it) => _setToView(it.articles, pd));
   }
 
-  _setToView(List<Articles> articles) {
+  _setToView(List<Articles> articles, ProgressDialog pd) {
+//    pd.dismiss();
     setState(() {
       news = articles;
     });

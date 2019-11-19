@@ -14,7 +14,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -31,6 +31,10 @@ dependencies:
   dio: any
   retrofit: any
   logger: any  #for logging purpose
+  #progress dialog
+  progress_dialog: ^1.2.0
+  #webview
+  webview_flutter: ^0.3.15+1
 
 dev_dependencies:
   flutter_test:
